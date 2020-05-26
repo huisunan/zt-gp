@@ -38,9 +38,12 @@
         </template>
       </el-table-column>
       <el-table-column
+        min-width="180"
         label="操作">
         <template slot-scope="{row}">
-          <el-button type="primary" round size="small">开始</el-button>
+          <!--          :disabled="row.status !== 0"   -->
+          <el-button type="primary" round size="small" @click="start(row.id)">开始</el-button>
+          <el-button type="info" round size="small" @click="result(row.id)">查看结果</el-button>
           <el-button type="success" round size="small" @click="showPicture(row.id)">上传图片</el-button>
           <el-button type="danger" round size="small" @click="del(row.id)">删除</el-button>
         </template>
@@ -49,6 +52,7 @@
 
     <task-add-dialog ref="dialog" @update="getList()"/>
     <task-picture-dialog ref="picture" @update="getList()"/>
+    <task-result-dialog ref="result"/>
   </div>
 </template>
 
@@ -56,28 +60,40 @@
   import { fetchGet, fetchPost } from '@/utils/request'
   import TaskAddDialog from '@/views/task/compontents/taskAddDialog'
   import TaskPictureDialog from '@/views/task/compontents/taskPictureDialog'
+  import TaskResultDialog from '@/views/task/compontents/taskResultDialog'
 
   export default {
     name: 'list',
-    components: { TaskPictureDialog, TaskAddDialog },
+    components: { TaskResultDialog, TaskPictureDialog, TaskAddDialog },
     data() {
-      return{
-        list:[]
+      return {
+        list: []
       }
-    },created() {
+    }, created() {
       this.getList()
-    },methods:{
-      getList(){
-        fetchPost('/task/list').then(res=>{
+    }, methods: {
+      getList() {
+        fetchPost('/task/list').then(res => {
           this.list = res.data.list
         })
-      },del(id){
-        fetchGet('/task/delete', { id }).then(res=>{
+      }, del(id) {
+        fetchGet('/task/delete', { id }).then(res => {
           this.getList()
         })
-      },showPicture(id){
+      }, showPicture(id) {
         this.$refs.picture.id = id
         this.$refs.picture.dialogVisible = true
+      }, start(id) {
+        fetchGet('/task/start', { id }).then(res => {
+            this.getList()
+          }
+        )
+      }, result(id) {
+        fetchGet('/task/result', { id }).then(res => {
+          this.$refs.result.list = res.data
+          this.$refs.result.dialogVisible = true
+
+        })
       }
     }
   }

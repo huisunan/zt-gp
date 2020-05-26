@@ -22,7 +22,7 @@ import java.io.IOException;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author zt
@@ -44,9 +44,18 @@ public class PictureController {
         pictureService.save(picture);
         String name = picture.getId() + "." + suffix;
         String absolutePath = new ClassPathResource("/").getFile().getAbsolutePath();
-        String targetPath = StringUtils.substringBeforeLast(StringUtils.substringBeforeLast(absolutePath, File.separator),File.separator);
-        String fileName = targetPath + File.separator + "upload" + File.separator + id + File.separator + name;
-        FileUtils.writeByteArrayToFile(new File(fileName),file.getBytes());
+        String targetPath = StringUtils.substringBeforeLast(StringUtils.substringBeforeLast(absolutePath, File.separator), File.separator);
+        String dir = targetPath + File.separator + "upload" + File.separator
+                + id + File.separator;
+        File temp = new File(dir + "temp");
+        if (!temp.exists())
+            temp.mkdirs();
+        File target = new File(dir + "target");
+        if (!target.exists())
+            target.mkdirs();
+
+        String fileName = dir + "source" + File.separator + name;
+        FileUtils.writeByteArrayToFile(new File(fileName), file.getBytes());
         return BaseResult.ok();
     }
 }

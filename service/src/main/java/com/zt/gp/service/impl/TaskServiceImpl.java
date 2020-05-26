@@ -39,7 +39,8 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements IT
             queryWrapper.lambda().eq(Picture::getTaskId,task.getId());
             List<Picture> pictures = pictureService.list(queryWrapper);
             for (Picture picture : pictures) {
-                String t = prefix + File.separator + task.getId() + File.separator + picture.getId() + "." + picture.getSuffix();
+                String t = prefix + File.separator + task.getId() + File.separator +"source"+File.separator + picture.getId()
+                        + "." + picture.getSuffix();
                 picture.setUrl(t);
             }
             task.setPictures(pictures);

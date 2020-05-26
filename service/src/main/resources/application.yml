@@ -19,3 +19,4 @@ mybatis:
 
 zt:
   url-prefix: 'http://localhost:7788/'
+  py-file: F:\workspace\test\test.py
