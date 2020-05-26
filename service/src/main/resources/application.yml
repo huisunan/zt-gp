@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///zt?useUnicode=true&characterEncoding=utf8&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: root
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+
+logging:
+  level:
+    com.zt.gp.mapper: debug
+
+mybatis:
+  config-location: classpath*:com/zt/gp/mapper/xml/*.xml
+
+zt:
+  url-prefix: 'http://localhost:7788/'
